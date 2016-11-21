@@ -27,7 +27,7 @@ public class ScreenTestAnimation : MonoBehaviour
 
 	void OnAnimatorIK (int layerIndex)
 	{
-		m_animator.SetLookAtWeight (lookWeight, .5f, 1f, 1f);
+		m_animator.SetLookAtWeight (lookWeight, .25f, 1f, 1f);
 
 		if (m_lookAt) {
 			m_animator.SetLookAtPosition (m_lookAtObj.transform.position);
