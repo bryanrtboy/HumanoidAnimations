@@ -8,9 +8,13 @@ public class ScreenTestAnimation : MonoBehaviour
 
 	public Canvas m_canvas;
 	public GameObject m_buttonPrefab;
-
 	public Animator m_animator;
+	public GameObject m_lookAtObj;
+	public bool m_lookAt = false;
 
+	int m_layer = 1;
+	float m_lookSmoother = 1f;
+	float lookWeight = 0;
 
 	void Awake ()
 	{
@@ -21,9 +25,37 @@ public class ScreenTestAnimation : MonoBehaviour
 		MakeButtons (parameters);
 	}
 
+	void OnAnimatorIK (int layerIndex)
+	{
+		m_animator.SetLookAtWeight (lookWeight, .5f, 1f, 1f);
+
+		if (m_lookAt) {
+			m_animator.SetLookAtPosition (m_lookAtObj.transform.position);
+			lookWeight = Mathf.Lerp (lookWeight, 1f, Time.deltaTime * m_lookSmoother);
+		} else {
+			lookWeight = Mathf.Lerp (lookWeight, 0f, Time.deltaTime * m_lookSmoother);
+		}
+
+	}
+
 	public void TriggerAnimation (string t)
 	{
 		m_animator.SetTrigger (t);
+	}
+
+	public void WeightAmount (float amount)
+	{
+		m_animator.SetLayerWeight (m_layer, amount);
+	}
+
+	public void WeightLayer (int layer)
+	{
+		m_layer = layer;
+	}
+
+	public void LookAt (bool b)
+	{
+		m_lookAt = b;
 	}
 
 	void MakeButtons (AnimatorControllerParameter[] p)
